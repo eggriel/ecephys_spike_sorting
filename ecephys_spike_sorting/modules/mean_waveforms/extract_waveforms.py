@@ -125,7 +125,7 @@ def extract_waveforms(raw_data,
                         waveforms[wv_idx, :, :] = rawWaveform * bit_volts
 
                 # concatenate to existing dataframe
-                target_template_id = spike_templates[np.where(spike_clusters == cluster_idx)[0][0]] + 1
+                target_template_id = spike_templates[np.where(spike_clusters == cluster_idx)[0][0]]
                 metrics = pd.concat([metrics, calculate_waveform_metrics(waveforms[:total_waveforms, :, :],
                                                                          cluster_id, 
                                                                          peak_channels[target_template_id], 
