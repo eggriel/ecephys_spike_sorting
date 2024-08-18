@@ -14,6 +14,7 @@ from ...common.utils import printProgressBar
 def extract_waveforms(raw_data, 
                       spike_times, 
                       spike_clusters, 
+                      spike_templates,
                       templates, 
                       channel_map, 
                       bit_volts, 
@@ -30,6 +31,7 @@ def extract_waveforms(raw_data,
     raw_data : continuous data as numpy array (samples x channels)
     spike_times : spike times (in samples)
     spike_clusters : cluster IDs for each spike time []
+    spike_template : template IDs for each spike time []
     clusterIDs : all unique cluster ids
     cluster_quality : 'noise' or 'good'
     sample_rate : Hz
@@ -123,9 +125,10 @@ def extract_waveforms(raw_data,
                         waveforms[wv_idx, :, :] = rawWaveform * bit_volts
 
                 # concatenate to existing dataframe
+                target_template_id = spike_templates[np.where(spike_clusters == cluster_idx)[0][0]]
                 metrics = pd.concat([metrics, calculate_waveform_metrics(waveforms[:total_waveforms, :, :],
                                                                          cluster_id, 
-                                                                         peak_channels[cluster_idx], 
+                                                                         peak_channels[target_template_id], 
                                                                          channel_map,
                                                                          sample_rate, 
                                                                          upsampling_factor,
